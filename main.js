@@ -34,7 +34,7 @@ function getQuitData() {
   
     const avoided = days * data.dailyCigs;
     const money = (avoided / data.cigsPerPack) * data.packPrice;
-    const timeSaved = (avoided * 6) / 60; // 6 minutes par cigarette
+    const timeSaved = (avoided * 11) / 60; // 11 minutes par cigarette
   
     document.getElementById("cigsAvoided").textContent = avoided;
     document.getElementById("moneySaved").textContent = money.toFixed(2);
