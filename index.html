@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quit Smoking Tracker</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Quit Smoking Tracker</h1>
+      </header>
+
+      <!-- Navigation inférieure (simule les différentes pages) -->
+      <nav class="bottom-nav">
+        <a href="#" data-view="dashboard" class="nav-link active">🏠</a>
+        <a href="#" data-view="health" class="nav-link">❤️</a>
+        <a href="#" data-view="achievements" class="nav-link">⭐</a>
+        <a href="#" data-view="settings" class="nav-link">⚙️</a>
+      </nav>
+
+      <main>
+        <!-- Dashboard -->
+        <section id="dashboard" class="view">
+          <h2>Time since last cigarette:</h2>
+          <p id="timeSince">Loading...</p>
+          <h2>Overall Progress</h2>
+          <ul>
+            <li><strong id="daysQuit">0</strong> days quit</li>
+            <li><strong id="cigsAvoided">0</strong> cigarettes avoided</li>
+            <li><strong id="moneySaved">0.00</strong> euros saved</li>
+            <li><strong id="timeSaved">0</strong> hours gained</li>
+          </ul>
+          <div class="actions">
+            <button class="btn" id="resetBtn">Reset</button>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="settings" class="view hidden">
+          <h2>Settings</h2>
+          <form id="settingsForm">
+            <div class="form-group">
+              <label for="lastSmoke">Date of last cigarette:</label>
+              <input type="datetime-local" id="lastSmoke" required />
+            </div>
+            <div class="form-group">
+              <label for="dailyCigs">Cigarettes per day:</label>
+              <input type="number" id="dailyCigs" min="1" required />
+            </div>
+            <div class="form-group">
+              <label for="cigsPerPack">Cigarettes per pack:</label>
+              <input type="number" id="cigsPerPack" min="1" required />
+            </div>
+            <div class="form-group">
+              <label for="packPrice">Pack price (euros):</label>
+              <input type="number" step="0.01" id="packPrice" min="0" required />
+            </div>
+            <button class="btn" type="submit">Save</button>
+          </form>
+        </section>
+
+        <!-- Health (contenu placeholder) -->
+        <section id="health" class="view hidden">
+          <h2>Health</h2>
+          <p>Coming soon...</p>
+        </section>
+
+        <!-- Achievements (contenu placeholder) -->
+        <section id="achievements" class="view hidden">
+          <h2>Achievements</h2>
+          <p>Coming soon...</p>
+        </section>
+      </main>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
