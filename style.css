@@ -66,7 +66,7 @@ h2 {
   margin: 1rem 0 0.5rem;
 }
 
-/* Sous-titres (ex: "Cigarettes avoided", etc.) */
+/* Sous-titres */
 h3 {
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
@@ -246,6 +246,51 @@ input {
 /* Statistiques détaillées */
 .stats-container {
   margin-top: 1.5rem;
+}
+
+/* Achievements */
+#achievementsGrid {
+  margin-top: 1rem;
+}
+
+/* Achievements Grid Layout */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.achievement-card {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #eee;
+}
+
+.achievement-card.locked {
+  opacity: 0.5;
+  filter: grayscale(80%);
+}
+
+.achievement-card .achievement-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.achievement-card .achievement-title {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.achievement-card .achievement-desc {
+  font-size: 0.85rem;
+  color: #ccc;
 }
 
 /* Media query desktop/tablette */

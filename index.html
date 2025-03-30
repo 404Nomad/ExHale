@@ -26,7 +26,7 @@
           <h2>Time since last cigarette:</h2>
           <p id="timeSince">Loading...</p>
 
-          <!-- Existing overall summary (kept for reference) -->
+          <!-- Basic overall summary -->
           <h2>Overall Progress</h2>
           <ul>
             <li><strong id="daysQuit">0</strong> days quit</li>
@@ -36,9 +36,8 @@
             <li><strong id="healthImprovement">0</strong>% overall health improvement</li>
           </ul>
 
-          <!-- NEW detailed stats section -->
+          <!-- Detailed stats -->
           <div class="stats-container">
-            <h2>Overall Stats</h2>
             <h3>Cigarettes avoided</h3>
             <ul>
               <li>Per day: <span id="cigsAvoidedDay">0</span></li>
@@ -183,7 +182,6 @@
         <section id="improvementDetail" class="view hidden">
           <button id="backFromDetail" class="btn">Back</button>
           <div class="detail-container">
-            <!-- Ring progress with percentage in the center -->
             <div class="detail-percentage" id="detailPercentage">
               <span id="progressText">0%</span>
             </div>
@@ -195,8 +193,8 @@
 
         <!-- Achievements -->
         <section id="achievements" class="view hidden">
-          <h2>Achievements</h2>
-          <p>Coming soon...</p>
+          <h2>Achievements <span id="achievementsCount">0/100</span></h2>
+          <div id="achievementsGrid" class="achievements-grid"></div>
         </section>
 
         <!-- Settings -->
