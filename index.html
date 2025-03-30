@@ -25,6 +25,8 @@
         <section id="dashboard" class="view">
           <h2>Time since last cigarette:</h2>
           <p id="timeSince">Loading...</p>
+
+          <!-- Existing overall summary (kept for reference) -->
           <h2>Overall Progress</h2>
           <ul>
             <li><strong id="daysQuit">0</strong> days quit</li>
@@ -33,6 +35,35 @@
             <li><strong id="timeSaved">0</strong> hours gained</li>
             <li><strong id="healthImprovement">0</strong>% overall health improvement</li>
           </ul>
+
+          <!-- NEW detailed stats section -->
+          <div class="stats-container">
+            <h2>Overall Stats</h2>
+            <h3>Cigarettes avoided</h3>
+            <ul>
+              <li>Per day: <span id="cigsAvoidedDay">0</span></li>
+              <li>Per week: <span id="cigsAvoidedWeek">0</span></li>
+              <li>Per month: <span id="cigsAvoidedMonth">0</span></li>
+              <li>Per year: <span id="cigsAvoidedYear">0</span></li>
+            </ul>
+
+            <h3>Money saved</h3>
+            <ul>
+              <li>Per day: <span id="moneySavedDay">0.00</span> €</li>
+              <li>Per week: <span id="moneySavedWeek">0.00</span> €</li>
+              <li>Per month: <span id="moneySavedMonth">0.00</span> €</li>
+              <li>Per year: <span id="moneySavedYear">0.00</span> €</li>
+            </ul>
+
+            <h3>Time won back</h3>
+            <ul>
+              <li>Per day: <span id="timeSavedDay">0 minutes</span></li>
+              <li>Per week: <span id="timeSavedWeek">0 minutes</span></li>
+              <li>Per month: <span id="timeSavedMonth">0 minutes</span></li>
+              <li>Per year: <span id="timeSavedYear">0 minutes</span></li>
+            </ul>
+          </div>
+
           <div class="actions">
             <button class="btn" id="resetBtn">Reset</button>
           </div>

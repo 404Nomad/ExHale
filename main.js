@@ -48,11 +48,38 @@ const improvementsData = {
   }
 };
 
+/**
+ * Convert decimal hours to a string in days/hours/minutes.
+ * Example: 1.75 hours => "1 hours 45 minutes"
+ */
+function formatHoursToDHMS(hoursFloat) {
+  const totalMinutes = Math.floor(hoursFloat * 60);
+  const days = Math.floor(totalMinutes / 1440); // 1440 = 60*24
+  const remainderAfterDays = totalMinutes % 1440;
+  const hours = Math.floor(remainderAfterDays / 60);
+  const minutes = remainderAfterDays % 60;
+
+  let result = "";
+  if (days > 0) {
+    result += days + " days ";
+  }
+  if (hours > 0) {
+    result += hours + " hours ";
+  }
+  if (minutes > 0) {
+    result += minutes + " minutes";
+  }
+
+  // If all are zero, show "0 minutes"
+  return result.trim() || "0 minutes";
+}
+
 // Mise à jour des données du tableau de bord
 function loadData() {
   const data = getQuitData();
   if (!data) return;
 
+  // 1. Calcul des stats globales
   const lastSmoke = new Date(data.lastSmoke);
   const now = new Date();
   const elapsed = now - lastSmoke;
@@ -64,15 +91,19 @@ function loadData() {
   document.getElementById("timeSince").textContent = `${days}d ${hours}h ${minutes}min`;
   document.getElementById("daysQuit").textContent = days;
 
+  // Nombre total de cigarettes évitées
   const avoided = days * data.dailyCigs;
+  // Argent économisé au total
   const money = (avoided / data.cigsPerPack) * data.packPrice;
-  const timeSaved = (avoided * 11) / 60;
+  // Temps gagné (en heures) pour toutes les cigarettes évitées
+  const timeSavedHours = (avoided * 11) / 60;
 
+  // Mise à jour de l'ancien tableau de bord
   document.getElementById("cigsAvoided").textContent = avoided;
   document.getElementById("moneySaved").textContent = money.toFixed(2);
-  document.getElementById("timeSaved").textContent = timeSaved.toFixed(1);
+  document.getElementById("timeSaved").textContent = timeSavedHours.toFixed(1);
 
-  // Calcul de la progression pour chaque amélioration en fonction du temps écoulé (en minutes)
+  // 2. Calcul des pourcentages pour chaque amélioration
   const calcPercent = (threshold) =>
     Math.min(100, (elapsedMinutes / threshold) * 100);
 
@@ -98,17 +129,56 @@ function loadData() {
     if (label) label.textContent = `${progress}`;
   });
 
-  // Mise à jour du compteur de progression globale
+  // Mise à jour du compteur global
   const heartLabel = document.getElementById("healthProgressCount");
   if (heartLabel) {
     heartLabel.textContent = `${completed}/8`;
   }
 
-  // Calcul de l'amélioration globale de la santé (moyenne)
+  // Moyenne d'amélioration globale
   const average =
     Object.values(progressValues).reduce((a, b) => a + b, 0) /
     Object.keys(progressValues).length;
   document.getElementById("healthImprovement").textContent = Math.floor(average);
+
+  // 3. Mise à jour des nouvelles stats "détaillées" (jour, semaine, mois, an)
+
+  // -- A) CIGARETTES AVOIDED
+  // Per day: user smokes "dailyCigs" => that many are avoided each day
+  const cigsPerDay = data.dailyCigs;
+  const cigsPerWeek = cigsPerDay * 7;
+  const cigsPerMonth = cigsPerDay * 30; // approximate month
+  const cigsPerYear = cigsPerDay * 365; // approximate year
+
+  document.getElementById("cigsAvoidedDay").textContent = cigsPerDay;
+  document.getElementById("cigsAvoidedWeek").textContent = cigsPerWeek;
+  document.getElementById("cigsAvoidedMonth").textContent = cigsPerMonth;
+  document.getElementById("cigsAvoidedYear").textContent = cigsPerYear;
+
+  // -- B) MONEY SAVED
+  // Money saved per day = (cigsPerDay / cigsPerPack) * packPrice
+  const moneyPerDay = (cigsPerDay / data.cigsPerPack) * data.packPrice;
+  const moneyPerWeek = moneyPerDay * 7;
+  const moneyPerMonth = moneyPerDay * 30;
+  const moneyPerYear = moneyPerDay * 365;
+
+  document.getElementById("moneySavedDay").textContent = moneyPerDay.toFixed(2);
+  document.getElementById("moneySavedWeek").textContent = moneyPerWeek.toFixed(2);
+  document.getElementById("moneySavedMonth").textContent = moneyPerMonth.toFixed(2);
+  document.getElementById("moneySavedYear").textContent = moneyPerYear.toFixed(2);
+
+  // -- C) TIME WON BACK
+  // Each cigarette avoided = 11 minutes
+  // So time saved per day (in hours):
+  const dailyTimeHours = (cigsPerDay * 11) / 60;
+  const weeklyTimeHours = dailyTimeHours * 7;
+  const monthlyTimeHours = dailyTimeHours * 30;
+  const yearlyTimeHours = dailyTimeHours * 365;
+
+  document.getElementById("timeSavedDay").textContent = formatHoursToDHMS(dailyTimeHours);
+  document.getElementById("timeSavedWeek").textContent = formatHoursToDHMS(weeklyTimeHours);
+  document.getElementById("timeSavedMonth").textContent = formatHoursToDHMS(monthlyTimeHours);
+  document.getElementById("timeSavedYear").textContent = formatHoursToDHMS(yearlyTimeHours);
 }
 
 // Mise à jour de l'indicateur de progression en bague (ring)
@@ -147,14 +217,14 @@ function showImprovementDetail(improvementKey) {
     const remainingMinutes = threshold - elapsedMinutes;
     let days = Math.floor(remainingMinutes / (60 * 24));
     const hours = Math.floor((remainingMinutes % (60 * 24)) / 60);
-    const minutes = Math.floor(remainingMinutes % 60);
-    
+    const mins = Math.floor(remainingMinutes % 60);
+
     if (days >= 365) {
       const years = Math.floor(days / 365);
       const remDays = days % 365;
-      document.getElementById("detailCountdown").textContent = `${years}y ${remDays}d ${hours}h ${minutes}min remaining`;
+      document.getElementById("detailCountdown").textContent = `${years}y ${remDays}d ${hours}h ${mins}min remaining`;
     } else {
-      document.getElementById("detailCountdown").textContent = `${days}d ${hours}h ${minutes}min remaining`;
+      document.getElementById("detailCountdown").textContent = `${days}d ${hours}h ${mins}min remaining`;
     }
     document.querySelector("#improvementDetail .detail-small").textContent = "Now it's just a matter of time";
   }
@@ -210,7 +280,16 @@ navLinks.forEach((link) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  if (!getQuitData()) {
+  const storedData = getQuitData();
+  if (storedData) {
+    // Pré-remplir les champs Settings si des données existent
+    document.getElementById("lastSmoke").value = storedData.lastSmoke;
+    document.getElementById("dailyCigs").value = storedData.dailyCigs;
+    document.getElementById("cigsPerPack").value = storedData.cigsPerPack;
+    document.getElementById("packPrice").value = storedData.packPrice;
+  }
+
+  if (!storedData) {
     showView("settings");
   } else {
     showView("dashboard");
@@ -218,6 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Mise à jour régulière des données toutes les 60 secondes
 setInterval(() => {
   const current = document.querySelector(".view:not(.hidden)");
   if (current && (current.id === "dashboard" || current.id === "health")) {

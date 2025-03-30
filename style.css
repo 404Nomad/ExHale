@@ -66,6 +66,14 @@ h2 {
   margin: 1rem 0 0.5rem;
 }
 
+/* Sous-titres (ex: "Cigarettes avoided", etc.) */
+h3 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #eee;
+  font-size: 1.2rem;
+}
+
 /* Listes */
 ul {
   list-style: none;
@@ -74,7 +82,7 @@ ul {
 }
 
 ul li {
-  margin: 0.5rem 0;
+  margin: 0.3rem 0;
 }
 
 /* Boutons */
@@ -233,6 +241,11 @@ input {
 #improvementDetail .detail-small {
   font-size: 0.9rem;
   color: #ccc;
+}
+
+/* Statistiques détaillées */
+.stats-container {
+  margin-top: 1.5rem;
 }
 
 /* Media query desktop/tablette */
