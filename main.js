@@ -1,3 +1,4 @@
+// Gestion du stockage local
 function getQuitData() {
   const data = localStorage.getItem("quitData");
   return data ? JSON.parse(data) : null;
@@ -11,7 +12,7 @@ function resetQuitData() {
   localStorage.removeItem("quitData");
 }
 
-// Données des améliorations centralisées
+// Seuils et descriptions des améliorations
 const improvementsData = {
   heartRate: {
     threshold: 20,
@@ -47,6 +48,7 @@ const improvementsData = {
   }
 };
 
+// Mise à jour des données du tableau de bord
 function loadData() {
   const data = getQuitData();
   if (!data) return;
@@ -70,59 +72,108 @@ function loadData() {
   document.getElementById("moneySaved").textContent = money.toFixed(2);
   document.getElementById("timeSaved").textContent = timeSaved.toFixed(1);
 
-  // Seuils de durée (en minutes)
-  const thresholds = {
-    heartRate: improvementsData.heartRate.threshold,
-    carbon: improvementsData.carbon.threshold,
-    circulation: improvementsData.circulation.threshold,
-    coughing: improvementsData.coughing.threshold,
-    riskCoronary: improvementsData.riskCoronary.threshold,
-    strokeRisk: improvementsData.strokeRisk.threshold,
-    lungCancer: improvementsData.lungCancer.threshold,
-    coronaryHeartDisease: improvementsData.coronaryHeartDisease.threshold
-  };
-
-  // Calcul des pourcentages
+  // Calcul de la progression pour chaque amélioration en fonction du temps écoulé (en minutes)
   const calcPercent = (threshold) =>
     Math.min(100, (elapsedMinutes / threshold) * 100);
 
   const progressValues = {
-    heartRate: calcPercent(thresholds.heartRate),
-    carbon: calcPercent(thresholds.carbon),
-    circulation: calcPercent(thresholds.circulation),
-    coughing: calcPercent(thresholds.coughing),
-    riskCoronary: calcPercent(thresholds.riskCoronary),
-    strokeRisk: calcPercent(thresholds.strokeRisk),
-    lungCancer: calcPercent(thresholds.lungCancer),
-    coronaryHeartDisease: calcPercent(thresholds.coronaryHeartDisease)
+    heartRate: calcPercent(improvementsData.heartRate.threshold),
+    carbon: calcPercent(improvementsData.carbon.threshold),
+    circulation: calcPercent(improvementsData.circulation.threshold),
+    coughing: calcPercent(improvementsData.coughing.threshold),
+    riskCoronary: calcPercent(improvementsData.riskCoronary.threshold),
+    strokeRisk: calcPercent(improvementsData.strokeRisk.threshold),
+    lungCancer: calcPercent(improvementsData.lungCancer.threshold),
+    coronaryHeartDisease: calcPercent(improvementsData.coronaryHeartDisease.threshold)
   };
 
   let completed = 0;
-
   Object.entries(progressValues).forEach(([key, value]) => {
     const progress = Math.floor(value);
     if (progress >= 100) completed++;
 
     const bar = document.getElementById(`progress-${key}`);
     const label = document.getElementById(`percent-${key}`);
-
     if (bar) bar.style.width = `${progress}%`;
     if (label) label.textContent = `${progress}`;
   });
 
-  // Mise à jour du compteur
+  // Mise à jour du compteur de progression globale
   const heartLabel = document.getElementById("healthProgressCount");
   if (heartLabel) {
     heartLabel.textContent = `${completed}/8`;
   }
 
-  // Calcul de la moyenne pour l'amélioration globale de la santé
+  // Calcul de l'amélioration globale de la santé (moyenne)
   const average =
     Object.values(progressValues).reduce((a, b) => a + b, 0) /
     Object.keys(progressValues).length;
   document.getElementById("healthImprovement").textContent = Math.floor(average);
 }
 
+// Mise à jour de l'indicateur de progression en bague (ring)
+function updateRingProgress(percent) {
+  const safePercent = Math.max(0, Math.min(100, percent));
+  const degrees = (safePercent / 100) * 360;
+  const ring = document.getElementById("detailPercentage");
+  ring.style.background = `conic-gradient(#00ff88 ${degrees}deg, #333 ${degrees}deg)`;
+  // Mise à jour du pourcentage affiché dans le span au centre
+  document.getElementById("progressText").textContent = safePercent + "%";
+}
+
+// Affichage de la vue de détail d'une amélioration avec mise à jour de la bague et du compte à rebours
+function showImprovementDetail(improvementKey) {
+  const improvement = improvementsData[improvementKey];
+  if (!improvement) return;
+  const data = getQuitData();
+  if (!data) return;
+
+  const lastSmoke = new Date(data.lastSmoke);
+  const now = new Date();
+  const elapsedMinutes = (now - lastSmoke) / 60000;
+  const threshold = improvement.threshold;
+  const progress = Math.min(100, (elapsedMinutes / threshold) * 100);
+  const progressFloor = Math.floor(progress);
+
+  // Mise à jour de la bague de progression
+  updateRingProgress(progressFloor);
+  document.getElementById("detailDesc").textContent = improvement.desc;
+
+  // Si la progression est complète ou non
+  if (progressFloor >= 100) {
+    document.getElementById("detailCountdown").textContent = "You did it!";
+    document.querySelector("#improvementDetail .detail-small").textContent = "Your health has improved";
+  } else {
+    const remainingMinutes = threshold - elapsedMinutes;
+    let days = Math.floor(remainingMinutes / (60 * 24));
+    const hours = Math.floor((remainingMinutes % (60 * 24)) / 60);
+    const minutes = Math.floor(remainingMinutes % 60);
+    
+    if (days >= 365) {
+      const years = Math.floor(days / 365);
+      const remDays = days % 365;
+      document.getElementById("detailCountdown").textContent = `${years}y ${remDays}d ${hours}h ${minutes}min remaining`;
+    } else {
+      document.getElementById("detailCountdown").textContent = `${days}d ${hours}h ${minutes}min remaining`;
+    }
+    document.querySelector("#improvementDetail .detail-small").textContent = "Now it's just a matter of time";
+  }
+  showView("improvementDetail");
+}
+
+// Gestion de l'affichage des vues
+function showView(viewId) {
+  const views = document.querySelectorAll(".view");
+  views.forEach((view) => {
+    view.classList.toggle("hidden", view.id !== viewId);
+  });
+  const navLinks = document.querySelectorAll(".bottom-nav a");
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.getAttribute("data-view") === viewId);
+  });
+}
+
+// Écouteurs d'événements
 document.getElementById("resetBtn").addEventListener("click", () => {
   if (confirm("Reset all data?")) {
     resetQuitData();
@@ -143,17 +194,6 @@ if (settingsForm) {
     saveQuitData(data);
     showView("dashboard");
     loadData();
-  });
-}
-
-function showView(viewId) {
-  const views = document.querySelectorAll(".view");
-  views.forEach((view) => {
-    view.classList.toggle("hidden", view.id !== viewId);
-  });
-  const navLinks = document.querySelectorAll(".bottom-nav a");
-  navLinks.forEach((link) => {
-    link.classList.toggle("active", link.getAttribute("data-view") === viewId);
   });
 }
 
@@ -185,33 +225,7 @@ setInterval(() => {
   }
 }, 60000);
 
-// Fonction pour afficher le détail d'une amélioration
-function showImprovementDetail(improvementKey) {
-  const improvement = improvementsData[improvementKey];
-  if (!improvement) return;
-  const data = getQuitData();
-  if (!data) return;
-  const lastSmoke = new Date(data.lastSmoke);
-  const now = new Date();
-  const elapsedMinutes = (now - lastSmoke) / 60000;
-  const threshold = improvement.threshold;
-  const progress = Math.min(100, (elapsedMinutes / threshold) * 100);
-  const progressFloor = Math.floor(progress);
-  document.getElementById("detailPercentage").textContent = `${progressFloor}%`;
-  document.getElementById("detailDesc").textContent = improvement.desc;
-  if (progressFloor >= 100) {
-    document.getElementById("detailCountdown").textContent = "You did it!";
-  } else {
-    const remainingMinutes = threshold - elapsedMinutes;
-    const days = Math.floor(remainingMinutes / (60 * 24));
-    const hours = Math.floor((remainingMinutes % (60 * 24)) / 60);
-    const minutes = Math.floor(remainingMinutes % 60);
-    document.getElementById("detailCountdown").textContent = `${days}d ${hours}h ${minutes}min remaining`;
-  }
-  showView("improvementDetail");
-}
-
-// Ajout des écouteurs sur chaque amélioration
+// Écouteurs pour afficher le détail de chaque amélioration
 document.querySelectorAll(".improvement").forEach((el) => {
   el.addEventListener("click", () => {
     const key = el.id.replace("impr-", "");
