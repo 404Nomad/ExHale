@@ -12,7 +12,7 @@
         <h1>Quit Smoking Tracker</h1>
       </header>
 
-      <!-- Navigation inférieure (simule les différentes pages) -->
+      <!-- Navigation -->
       <nav class="bottom-nav">
         <a href="#" data-view="dashboard" class="nav-link active">🏠</a>
         <a href="#" data-view="health" class="nav-link">❤️</a>
@@ -31,10 +31,138 @@
             <li><strong id="cigsAvoided">0</strong> cigarettes avoided</li>
             <li><strong id="moneySaved">0.00</strong> euros saved</li>
             <li><strong id="timeSaved">0</strong> hours gained</li>
+            <li><strong id="healthImprovement">0</strong>% overall health improvement</li>
           </ul>
           <div class="actions">
             <button class="btn" id="resetBtn">Reset</button>
           </div>
+        </section>
+
+        <!-- Health Improvements -->
+        <section id="health" class="view hidden">
+          <h2>
+            Health Improvements <span id="healthProgressCount">0/8</span>
+          </h2>
+          <div id="improvementsContainer">
+            <div class="improvement" id="impr-heartRate">
+              <div class="progress-row">
+                <span id="percent-heartRate">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-heartRate"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">Your heart rate and blood pressure drop</p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-carbon">
+              <div class="progress-row">
+                <span id="percent-carbon">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-carbon"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">
+                The carbon monoxide level in your blood drops to normal
+              </p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-circulation">
+              <div class="progress-row">
+                <span id="percent-circulation">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-circulation"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">
+                Your circulation improves and your lung function increases
+              </p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-coughing">
+              <div class="progress-row">
+                <span id="percent-coughing">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-coughing"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">Coughing and shortness of breath decrease</p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-riskCoronary">
+              <div class="progress-row">
+                <span id="percent-riskCoronary">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-riskCoronary"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">
+                Your risk of coronary heart disease is about half that of a
+                smoker's
+              </p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-strokeRisk">
+              <div class="progress-row">
+                <span id="percent-strokeRisk">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-strokeRisk"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">The stroke risk is that of a nonsmoker's</p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-lungCancer">
+              <div class="progress-row">
+                <span id="percent-lungCancer">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-lungCancer"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">
+                Your risk of lung cancer falls to about half that of a smoker and
+                your risk of cancer of the mouth, throat, esophagus, bladder,
+                cervix, and pancreas decreases
+              </p>
+              <span class="arrow">&gt;</span>
+            </div>
+            <div class="improvement" id="impr-coronaryHeartDisease">
+              <div class="progress-row">
+                <span id="percent-coronaryHeartDisease">0</span>
+                <div class="progress-bar">
+                  <div class="progress" id="progress-coronaryHeartDisease"></div>
+                </div>
+                <span>100</span>
+              </div>
+              <p class="desc">
+                The risk of coronary heart disease is that of a nonsmoker's
+              </p>
+              <span class="arrow">&gt;</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Improvement Detail -->
+        <section id="improvementDetail" class="view hidden">
+          <button id="backFromDetail" class="btn">Back</button>
+          <div class="detail-container">
+            <div class="detail-percentage" id="detailPercentage">0%</div>
+            <div class="detail-desc" id="detailDesc">Description</div>
+            <div class="detail-countdown" id="detailCountdown">Countdown</div>
+            <p class="detail-small">Your health has improved</p>
+          </div>
+        </section>
+
+        <!-- Achievements -->
+        <section id="achievements" class="view hidden">
+          <h2>Achievements</h2>
+          <p>Coming soon...</p>
         </section>
 
         <!-- Settings -->
@@ -60,21 +188,8 @@
             <button class="btn" type="submit">Save</button>
           </form>
         </section>
-
-        <!-- Health (contenu placeholder) -->
-        <section id="health" class="view hidden">
-          <h2>Health</h2>
-          <p>Coming soon...</p>
-        </section>
-
-        <!-- Achievements (contenu placeholder) -->
-        <section id="achievements" class="view hidden">
-          <h2>Achievements</h2>
-          <p>Coming soon...</p>
-        </section>
       </main>
     </div>
-
     <script src="main.js"></script>
   </body>
 </html>

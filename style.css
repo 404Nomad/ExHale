@@ -1,130 +1,214 @@
 /* Reset de base */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #111;
-    color: #eee;
-    line-height: 1.5;
-  }
-  
-  /* Conteneur central, mobile-first */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #111;
+  color: #eee;
+  line-height: 1.5;
+}
+
+/* Conteneur central */
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem;
+  padding-bottom: 5rem;
+}
+
+/* Header */
+header h1 {
+  text-align: center;
+  color: #00ff88;
+  margin-bottom: 1rem;
+}
+
+/* Navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #222;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.75rem 0;
+  border-top: 1px solid #444;
+  z-index: 10;
+}
+
+.bottom-nav a {
+  color: #00ff88;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.bottom-nav a.active {
+  font-weight: bold;
+}
+
+/* Vues */
+.view {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Titres */
+h2 {
+  color: #00ff88;
+  margin: 1rem 0 0.5rem;
+}
+
+/* Listes */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+ul li {
+  margin: 0.5rem 0;
+}
+
+/* Boutons */
+.btn {
+  display: inline-block;
+  background: #00ff88;
+  color: #000;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.btn:hover {
+  background: #00cc6a;
+  cursor: pointer;
+}
+
+/* Formulaire */
+form {
+  margin-top: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #222;
+  color: #eee;
+}
+
+/* Zone d'actions */
+.actions {
+  margin: 1.5rem 0;
+}
+
+/* Section Health Improvements */
+#improvementsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.improvement {
+  background-color: #1a1a1a;
+  padding: 1rem;
+  border-radius: 8px;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.progress-bar {
+  flex-grow: 1;
+  background: #333;
+  border-radius: 10px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: #00ff88;
+  transition: width 0.3s ease;
+}
+
+.desc {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+/* Flèche pour améliorer cliquable */
+.improvement .arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: #00ff88;
+}
+
+/* Improvement Detail View */
+#improvementDetail {
+  text-align: center;
+  padding: 2rem;
+}
+
+#improvementDetail .detail-container {
+  margin-top: 2rem;
+}
+
+#improvementDetail .detail-percentage {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+#improvementDetail .detail-desc {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#improvementDetail .detail-countdown {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#improvementDetail .detail-small {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Media query desktop/tablette */
+@media (min-width: 600px) {
   .container {
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 1rem;
+    max-width: 600px;
   }
-  
-  /* En-tête */
-  header h1 {
-    text-align: center;
-    color: #00ff88;
-    margin-bottom: 1rem;
-  }
-  
-  /* Vues */
-  .view {
-    display: block;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  /* Titres */
-  h2 {
-    color: #00ff88;
-    margin: 1rem 0 0.5rem;
-  }
-  
-  /* Listes */
-  ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 1rem;
-  }
-  
-  ul li {
-    margin: 0.5rem 0;
-  }
-  
-  /* Boutons et liens */
-  .btn {
-    display: inline-block;
-    background: #00ff88;
-    color: #000;
-    padding: 0.5rem 1rem;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  
-  .btn:hover {
-    background: #00cc6a;
-    cursor: pointer;
-  }
-  
-  /* Formulaire */
-  form {
-    margin-top: 1rem;
-  }
-  
-  .form-group {
-    margin-bottom: 1rem;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 0.25rem;
-  }
-  
-  input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #444;
-    border-radius: 4px;
-    background-color: #222;
-    color: #eee;
-  }
-  
-  /* Zone d'actions */
-  .actions {
-    margin: 1.5rem 0;
-  }
-  
-  /* Navigation inférieure */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #222;
-    display: flex;
-    justify-content: space-around;
-    padding: 0.75rem 0;
-    border-top: 1px solid #444;
-    z-index: 10;
-  }
-  
-  .bottom-nav a {
-    color: #00ff88;
-    font-size: 1.5rem;
-    text-decoration: none;
-  }
-  
-  .bottom-nav a.active {
-    font-weight: bold;
-  }
-  
-  /* Media query pour écrans plus larges */
-  @media (min-width: 600px) {
-    .container {
-      max-width: 600px;
-    }
-  }
-  
+}
